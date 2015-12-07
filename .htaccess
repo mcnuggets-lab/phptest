@@ -1,4 +1,4 @@
 RewriteEngine on
 RewriteBase /
 RewriteCond $1 !^(index\.php|images|robots\.txt|$)
-RewriteRule ^(.*)$ phptest/index.php?/$1 [L,QSA]
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
