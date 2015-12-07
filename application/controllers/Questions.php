@@ -10,23 +10,21 @@ class Questions extends CI_Controller {
 
         public function index()
         {
-                $data['questions'] = $this->polls_model->get_questions();
+                $data['questions'] = $this->questions_model->get_questions();
                 $data['title'] = 'Questions';
 
                 $this->load->view('templates/header', $data);
                 $this->load->view('polls/index', $data);
                 $this->load->view('templates/footer');
         }
-/*
+
         public function view()
         {
                 $data['questions_item'] = $this->questions_model->get_questions();
 
                 if (empty($data['questions_item']))
                 {
-                        $this->load->view('templates/header', $data);
-                        $this->load->view('polls/empty', $data);
-                        $this->load->view('templates/footer');
+                        show_404();
                 }
 
                 $data['question'] = $data['questions_item']['question'];
@@ -34,5 +32,5 @@ class Questions extends CI_Controller {
                 $this->load->view('templates/header', $data);
                 $this->load->view('polls/view', $data);
                 $this->load->view('templates/footer');
-        }*/
+        }
 }
