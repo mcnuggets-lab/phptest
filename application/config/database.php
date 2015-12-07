@@ -73,11 +73,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+// For openshift environment variables
+define('DB_HOST', getenv('OPENSHIFT_MYSQL_DB_HOST'));
+define('DB_PORT',getenv('OPENSHIFT_MYSQL_DB_PORT')); 
+define('DB_USER',getenv('OPENSHIFT_MYSQL_DB_USERNAME'));
+define('DB_PASS',getenv('OPENSHIFT_MYSQL_DB_PASSWORD'));
+define('DB_NAME',getenv('OPENSHIFT_GEAR_NAME'));
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => OPENSHIFT_MYSQL_DB_HOST,
-	'username' => OPENSHIFT_MYSQL_DB_USERNAME,
-	'password' => OPENSHIFT_MYSQL_DB_PASSWORD,
+	'hostname' => DB_HOST,
+	'username' => DB_USER,
+	'password' => DB_PASS,
 	'database' => 'phptest',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
