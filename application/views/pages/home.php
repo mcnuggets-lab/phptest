@@ -1,1 +1,1 @@
-Hello World! This is home.
+These is nothing here (yet). Try <a href="<?php echo site_url("/polls/"); ?>">this one</a> instead.
