@@ -1,3 +1,3 @@
-                <p><em>&copy; 2015</em></p>
+                <p><em>&copy; McNuggets-Lab 2015</em></p>
         </body>
 </html>

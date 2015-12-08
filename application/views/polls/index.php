@@ -1,13 +1,10 @@
 <h2><?php echo $title; ?></h2>
 
 	<ul>
-	<?php if (!(empty($questions))) {
-		foreach ($questions as $questions_item): ?>
+		<?php foreach ($questions as $question_item): ?>
 
-        <li><a href="<?php echo site_url("/polls/".$questions_item['id']) ?>"><?php echo $questions_item['question_text']; ?></a></h3>
+        <li><a href="<?php echo site_url("/polls/".$question_item['id']) ?>" target="_self"><?php echo $question_item['question_text']; ?></a>
 
 		<?php endforeach; ?>
-	<?php }
-	else echo "No questions available.";
-	?>
+
 	</ul>
