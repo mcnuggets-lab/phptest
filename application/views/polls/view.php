@@ -12,7 +12,7 @@
 
     <?php foreach ($choices as $choice_item): ?>
 
-    <input type="<?php echo $type; ?>" name="choices<?php if ($type == 'checkbox') echo '[]'; ?>" value="<?php echo $choice_item['id']; ?>" id="choice<?php echo $choice_item['id']; ?>" />
+    <input type="<?php echo $input_type; ?>" name="choices<?php if ($input_type == 'checkbox') echo '[]'; ?>" value="<?php echo $choice_item['id']; ?>" id="choice<?php echo $choice_item['id']; ?>" />
     <label for="choice<?php echo $choice_item['id']; ?>"><?php echo $choice_item['choice_text']; ?></label><br />
 
 	<?php endforeach; ?>

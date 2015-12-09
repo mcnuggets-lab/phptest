@@ -6,7 +6,7 @@
             <br />
             <p>
                 <a href="<?php echo site_url("/polls/") ?>" class="pull-left btn btn-default">Start over</a>
-                <?php if ($type == 'radio' && !(empty($chosen))) { ?>
+                <?php if ($input_type == 'radio' && !(empty($chosen))) { ?>
                     <a href="<?php echo site_url("/polls/".$chosen) ?>" class="pull-right btn btn-default">Next question</a>
                 <?php } ?>
             </p>

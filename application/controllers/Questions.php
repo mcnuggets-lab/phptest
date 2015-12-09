@@ -33,7 +33,7 @@ class Questions extends CI_Controller {
         {
                 $data['question_item'] = $this->questions_model->get_question_with_id($id);
                 $data['choices'] = $this->choices_model->get_choices($id);
-                $data['type'] = $this->questions_model->get_input_type($id);
+                $data['input_type'] = $this->questions_model->get_input_type($id);
 
                 if (empty($data['question_item']))
                 {
@@ -58,12 +58,11 @@ class Questions extends CI_Controller {
 
         public function submit($id = NULL)
         {
-                $type = $this->questions_model->get_input_type($id);
+                $input_type = $this->questions_model->get_input_type($id);
 
-                if ($type == 'radio') {
+                if ($input_type == 'radio') {
 
                         $this->form_validation->set_rules('choices', 'A choice', 'required');
-
                         if ($this->form_validation->run() === FALSE)
                         {
                     
@@ -72,14 +71,22 @@ class Questions extends CI_Controller {
 
                         }
                 }
-                else if ($type == 'checkbox') {
-                        // No validation is required for checkboxes.
+                else if ($input_type == 'checkbox') {
+					
+                        $this->form_validation->set_rules('choices', 'A choice', 'required');
+						if ($this->form_validation->run() === FALSE)
+                        {
+                    
+                                $this->session->set_flashdata('errors', 'Please select at least one choice.');
+                                redirect(base_url('/polls/'.$id));
+
+                        }
                 }
                 
                 
                 $data['choices'] = $this->input->post('choices');
-                $this->choices_model->vote($data['choices'], $type);
-                if ($type == 'radio') $this->session->set_flashdata('choices', (int)$data['choices']);
+                $this->choices_model->vote($data['choices'], $input_type);
+                if ($input_type == 'radio') $this->session->set_flashdata('choices', (int)$data['choices']);
                 redirect(base_url('/polls/results/'.$id));
 
                 
@@ -90,7 +97,8 @@ class Questions extends CI_Controller {
 
                 $data['question_item'] = $this->questions_model->get_question_with_id($id);
                 $data['choices'] = $this->choices_model->get_choices($id);
-                $data['type'] = $this->questions_model->get_input_type($id);
+                $data['input_type'] = $this->questions_model->get_input_type($id);
+				$data['chart_type'] = $this->questions_model->get_chart_type($id);
                 $chosen = $this->session->flashdata('choices');
                 $data['chosen'] = $this->choices_model->get_followup_question_id($chosen);
 

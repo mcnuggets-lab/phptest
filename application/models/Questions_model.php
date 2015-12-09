@@ -25,8 +25,15 @@ class Questions_model extends CI_Model {
 
         public function get_input_type($id) {
                 $query = $this->db->get_where("questions", array('id' => $id))->row_array();
-                $type_id = $query['input_type_id'];
+                $input_type_id = $query['input_type_id'];
                 $query = $this->db->get_where("input_types", array('id' => $type_id))->row_array();
+                return $query['type'];
+        }
+		
+		public function get_chart_type($id) {
+                $query = $this->db->get_where("questions", array('id' => $id))->row_array();
+                $chart_type_id = $query['chart_type_id'];
+                $query = $this->db->get_where("chart_types", array('id' => $chart_type_id))->row_array();
                 return $query['type'];
         }
 

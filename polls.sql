@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.0.2
+-- version 4.0.10.10
 -- http://www.phpmyadmin.net
 --
--- 主機: 127.0.0.1
--- 產生時間： 2015-12-09 03:45:02
--- 伺服器版本: 10.0.17-MariaDB
--- PHP 版本： 5.6.14
+-- 主機: 127.3.234.2:3306
+-- 建立日期: 2015 年 12 月 09 日 12:49
+-- 伺服器版本: 5.5.45
+-- PHP 版本: 5.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,10 +14,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- 資料庫： `polls`
+-- 資料庫: `polls`
 --
 
 -- --------------------------------------------------------
@@ -26,23 +26,38 @@ SET time_zone = "+00:00";
 -- 資料表結構 `choices`
 --
 
-CREATE TABLE `choices` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `choices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) NOT NULL,
   `choice_text` varchar(255) NOT NULL,
   `followup_question_id` int(11) DEFAULT NULL,
-  `votes` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `votes` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_id` (`question_id`),
+  KEY `followup_question_id` (`followup_question_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- 資料表的匯出資料 `choices`
 --
 
 INSERT INTO `choices` (`id`, `question_id`, `choice_text`, `followup_question_id`, `votes`) VALUES
-(1, 1, 'Yes!', 2, 0),
-(2, 1, 'No.', 3, 0),
-(3, 2, 'Choice 01 for Q2', NULL, 0),
-(4, 2, 'Choice 02 for Q2', NULL, 0);
+(1, 1, 'Yes!', 2, 4),
+(2, 1, 'No.', 3, 7),
+(3, 2, 'Algebra / Algebraic Geometry', NULL, 1),
+(4, 2, 'Analysis / PDE', NULL, 0),
+(5, 2, 'Applied Mathematics', NULL, 0),
+(6, 2, 'Geometry / Topology', NULL, 0),
+(7, 2, 'Logic', NULL, 0),
+(8, 2, 'Number Theory / Arithmetic Geometry', NULL, 1),
+(9, 2, 'Other', NULL, 0),
+(10, 3, 'It is too boring. I hate repetitive calculations.', NULL, 1),
+(11, 3, 'It is too difficult. I can never understand it.', NULL, 1),
+(12, 3, 'It is too abstract and simply useless in daily life.', NULL, 1),
+(13, 3, 'My math teacher sucks.', NULL, 1),
+(14, 3, 'There are too many formula and theorems to remember.', NULL, 1),
+(15, 3, 'I hate model answers. It just cripples my creativity.', NULL, 1),
+(16, 3, 'Other', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -50,10 +65,11 @@ INSERT INTO `choices` (`id`, `question_id`, `choice_text`, `followup_question_id
 -- 資料表結構 `input_types`
 --
 
-CREATE TABLE `input_types` (
-  `id` int(11) NOT NULL,
-  `type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `input_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- 資料表的匯出資料 `input_types`
@@ -69,12 +85,14 @@ INSERT INTO `input_types` (`id`, `type`) VALUES
 -- 資料表結構 `questions`
 --
 
-CREATE TABLE `questions` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `questions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_text` varchar(255) NOT NULL,
   `starting` tinyint(1) NOT NULL DEFAULT '0',
-  `input_type_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `input_type_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_type_id` (`input_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 資料表的匯出資料 `questions`
@@ -82,53 +100,9 @@ CREATE TABLE `questions` (
 
 INSERT INTO `questions` (`id`, `question_text`, `starting`, `input_type_id`) VALUES
 (1, 'Do you like Mathematics?', 1, 1),
-(2, 'Why do you like Mathematics?', 0, 2),
+(2, 'What branches of mathematics do you like?', 0, 2),
 (3, 'Why don''t you like Mathematics?', 0, 2);
 
---
--- 已匯出資料表的索引
---
-
---
--- 資料表索引 `choices`
---
-ALTER TABLE `choices`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `question_id` (`question_id`),
-  ADD KEY `followup_question_id` (`followup_question_id`);
-
---
--- 資料表索引 `input_types`
---
-ALTER TABLE `input_types`
-  ADD PRIMARY KEY (`id`);
-
---
--- 資料表索引 `questions`
---
-ALTER TABLE `questions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `input_type_id` (`input_type_id`);
-
---
--- 在匯出的資料表使用 AUTO_INCREMENT
---
-
---
--- 使用資料表 AUTO_INCREMENT `choices`
---
-ALTER TABLE `choices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- 使用資料表 AUTO_INCREMENT `input_types`
---
-ALTER TABLE `input_types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用資料表 AUTO_INCREMENT `questions`
---
-ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- 已匯出資料表的限制(Constraint)
 --

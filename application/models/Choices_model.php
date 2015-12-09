@@ -11,16 +11,16 @@ class Choices_model extends CI_Model {
                 return $query->result_array();
         }
 
-        public function vote($data, $type) {
+        public function vote($data, $input_type) {
 
-                if ($type == 'radio') {
+                if ($input_type == 'radio') {
 
                         $this->db->set('votes', 'votes+1', FALSE);
                         $this->db->where('id', (int)$data);
                         $this->db->update('choices');
 
                 }
-                else if ($type = 'checkbox') {
+                else if ($input_type = 'checkbox') {
                         
                         if (empty($data)) return;
 
