@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: 127.3.234.2:3306
--- 建立日期: 2015 年 12 月 09 日 12:49
+-- 建立日期: 2015 年 12 月 09 日 13:39
 -- 伺服器版本: 5.5.45
 -- PHP 版本: 5.3.3
 
@@ -19,6 +19,26 @@ SET time_zone = "+00:00";
 --
 -- 資料庫: `polls`
 --
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `chart_types`
+--
+
+CREATE TABLE IF NOT EXISTS `chart_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- 資料表的匯出資料 `chart_types`
+--
+
+INSERT INTO `chart_types` (`id`, `type`) VALUES
+(1, 'ColumnChart'),
+(2, 'PieChart');
 
 -- --------------------------------------------------------
 
@@ -90,18 +110,20 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `question_text` varchar(255) NOT NULL,
   `starting` tinyint(1) NOT NULL DEFAULT '0',
   `input_type_id` int(11) NOT NULL,
+  `chart_type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `input_type_id` (`input_type_id`)
+  KEY `input_type_id` (`input_type_id`),
+  KEY `chart_type_id` (`chart_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 資料表的匯出資料 `questions`
 --
 
-INSERT INTO `questions` (`id`, `question_text`, `starting`, `input_type_id`) VALUES
-(1, 'Do you like Mathematics?', 1, 1),
-(2, 'What branches of mathematics do you like?', 0, 2),
-(3, 'Why don''t you like Mathematics?', 0, 2);
+INSERT INTO `questions` (`id`, `question_text`, `starting`, `input_type_id`, `chart_type_id`) VALUES
+(1, 'Do you like Mathematics?', 1, 1, 2),
+(2, 'What branches of mathematics do you like?', 0, 2, 1),
+(3, 'Why don''t you like Mathematics?', 0, 2, 1);
 
 --
 -- 已匯出資料表的限制(Constraint)
@@ -118,7 +140,8 @@ ALTER TABLE `choices`
 -- 資料表的 Constraints `questions`
 --
 ALTER TABLE `questions`
-  ADD CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`input_type_id`) REFERENCES `input_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`input_type_id`) REFERENCES `input_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`chart_type_id`) REFERENCES `chart_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

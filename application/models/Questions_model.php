@@ -26,7 +26,7 @@ class Questions_model extends CI_Model {
         public function get_input_type($id) {
                 $query = $this->db->get_where("questions", array('id' => $id))->row_array();
                 $input_type_id = $query['input_type_id'];
-                $query = $this->db->get_where("input_types", array('id' => $type_id))->row_array();
+                $query = $this->db->get_where("input_types", array('id' => $input_type_id))->row_array();
                 return $query['type'];
         }
 		

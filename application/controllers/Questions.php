@@ -73,7 +73,7 @@ class Questions extends CI_Controller {
                 }
                 else if ($input_type == 'checkbox') {
 					
-                        $this->form_validation->set_rules('choices', 'A choice', 'required');
+                        $this->form_validation->set_rules('choices[]', 'A choice', 'required');
 						if ($this->form_validation->run() === FALSE)
                         {
                     

@@ -54,10 +54,14 @@
         bar: { groupWidth: '61.8%' },
         chartArea: { width: '80%', height: '80%', backgroundColor: { stroke: '#000', strokeWidth: 1 } },
         vAxis: { viewWindow: { min: 0 } },
+		<?php if ($chart_type == 'ColumnChart' || $chart_type == 'BarChart') { ?>
         animation: { startup: true, easing: 'in', duration: 1000 },
+		<?php } else if ($chart_type == 'PieChart') { ?>
+		is3D: true,
+		<?php } ?>
     };
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    var chart = new google.visualization.<?php echo $chart_type; ?>(document.getElementById('chart_div'));
     chart.draw(data, options);
 
 
