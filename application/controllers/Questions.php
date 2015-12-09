@@ -6,7 +6,9 @@ class Questions extends CI_Controller {
                 parent::__construct();
                 $this->load->model('questions_model');
                 $this->load->model('choices_model');
-                $this->load->helper('url_helper');
+                $this->load->helper(array('url_helper', 'form'));
+                $this->load->library('form_validation');
+                $this->load->library('session');
         }
 
         public function index()
@@ -49,54 +51,51 @@ class Questions extends CI_Controller {
                         $this->load->view('polls/view', $data);
                         $this->load->view('templates/footer');
                 }
-
-                $this->load->helper('form');
-                $this->load->library('form_validation');
-
-                $this->form_validation->set_rules('choices', 'A choice', 'required');
-
-                if ($this->form_validation->run() === FALSE)
-                {
-                    $data['title'] = '';
-
-                    $this->load->view('templates/header', $data);
-                    $this->load->view('polls/view');
-                    $this->load->view('templates/footer');
-
-                }
-                else
-                {
-                    $data['title'] = 'Result';
-
-                    $this->load->view('polls/results');
-                }
         }
 
-        public function result()
+        public function submit($id = NULL)
         {
-                $this->load->helper('form');
-                $this->load->library('form_validation');
+                $type = $this->questions_model->get_input_type($id);
 
-                $this->form_validation->set_rules('choices', 'A choice', 'required');
+                if ($type == 'radio') {
 
-                /*if ($this->form_validation->run() === FALSE)
-                {
-                    $data['title'] = '';
+                        $this->form_validation->set_rules('choices', 'A choice', 'required');
 
-                    $this->load->view('templates/header', $data);
-                    $this->load->view('polls/view');
-                    $this->load->view('templates/footer');
+                        if ($this->form_validation->run() === FALSE)
+                        {
+                    
+                                $this->session->set_flashdata('errors', 'Please select a choice.');
+                                redirect(base_url('/polls/'.$id));
 
+                        }
                 }
-                else
-                {
-                    $data['title'] = 'Result';
-
-                    $this->load->view('polls/results');
-                }*/
+                else if ($type == 'checkbox') {
+                        // No validation is required for checkboxes.
+                }
                 
-                $data['title'] = 'Result';
-                $this->load->view('polls/results');
+                
+                $data['choices'] = $this->input->post('choices');
+                $this->choices_model->vote($data['choices'], $type);
+                if ($type == 'radio') $this->session->set_flashdata('choices', (int)$data['choices']);
+                redirect(base_url('/polls/results/'.$id));
+
+                
 
         }
+
+        public function results($id = NULL) {
+
+                $data['question_item'] = $this->questions_model->get_question_with_id($id);
+                $data['choices'] = $this->choices_model->get_choices($id);
+                $data['type'] = $this->questions_model->get_input_type($id);
+                $chosen = $this->session->flashdata('choices');
+                $data['chosen'] = $this->choices_model->get_followup_question_id($chosen);
+
+                $data['title'] = 'Result';
+
+                $this->load->view('templates/header', $data);
+                $this->load->view('polls/results', $data);
+                $this->load->view('templates/footer', $data);
+        }
+
 }

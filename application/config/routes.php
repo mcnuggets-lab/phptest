@@ -50,6 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
+$route['polls/submit/(:any)'] = 'questions/submit/$1';
+$route['polls/results/(:any)'] = 'questions/results/$1';
 $route['polls/(:any)'] = 'questions/view/$1';
 $route['polls'] = 'questions';
 $route['(:any)'] = 'pages/view/$1';
