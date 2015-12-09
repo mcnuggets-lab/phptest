@@ -40,6 +40,9 @@ class Questions extends CI_Controller {
                         show_404();
                 }
                 else if (empty($data['choices'])) {
+					
+						$data['title'] = $data['question_item']['question_text'];
+						
                         $this->load->view('templates/header', $data);
                         $this->load->view('polls/nochoices', $data);
                         $this->load->view('templates/footer');
