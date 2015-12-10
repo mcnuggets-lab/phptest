@@ -34,8 +34,11 @@ class Questions extends CI_Controller {
                 $data['question_item'] = $this->questions_model->get_question_with_id($id);
                 $data['choices'] = $this->choices_model->get_choices($id);
                 $data['input_type'] = $this->questions_model->get_input_type($id);
+				$starting = $data['question_item']['starting'];
+				$data['id'] = $id;
+				$data['starting'] = $starting;
 
-                if (empty($data['question_item']))
+                if (empty($data['question_item']) || (($this->session->key != $id) && ($starting == FALSE)))
                 {
                         show_404();
                 }
@@ -86,7 +89,9 @@ class Questions extends CI_Controller {
                 
                 $data['choices'] = $this->input->post('choices');
                 $this->choices_model->vote($data['choices'], $input_type);
-                if ($input_type == 'radio') $this->session->set_flashdata('choices', (int)$data['choices']);
+                if ($input_type == 'radio') {
+					$this->session->set_userdata('key', $data['choices']);
+				}
                 redirect(base_url('/polls/results/'.$id));
 
                 
@@ -99,8 +104,14 @@ class Questions extends CI_Controller {
                 $data['choices'] = $this->choices_model->get_choices($id);
                 $data['input_type'] = $this->questions_model->get_input_type($id);
 				$data['chart_type'] = $this->questions_model->get_chart_type($id);
-                $chosen = $this->session->flashdata('choices');
-                $data['chosen'] = $this->choices_model->get_followup_question_id($chosen);
+				if ($this->session->key == $id) {
+					$key = $this->session->key;
+					$data['followup_id'] = $this->choices_model->get_followup_question_id($key);
+					if ($data['followup_id'] != NULL) {
+						$this->session->set_userdata('key', (int)$data['followup_id']);
+					}
+					else $this->session->unset_userdata('key');
+				}
 
                 $data['title'] = 'Result';
 

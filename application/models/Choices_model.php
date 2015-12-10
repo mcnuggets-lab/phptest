@@ -38,7 +38,7 @@ class Choices_model extends CI_Model {
 
         // Given a choice id, return the followup question id, if any.
         public function get_followup_question_id($choice) {
-                $query = $this->db->get_where("choices", array('id' => $choice))->row_array();
+                $query = $this->db->get_where("choices", array('id' => (int)$choice))->row_array();
                 return $query['followup_question_id'];
         }
 
