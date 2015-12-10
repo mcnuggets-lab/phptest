@@ -104,7 +104,7 @@ class Questions extends CI_Controller {
                 $data['choices'] = $this->choices_model->get_choices($id);
                 $data['input_type'] = $this->questions_model->get_input_type($id);
 				$data['chart_type'] = $this->questions_model->get_chart_type($id);
-				if ($this->session->key == $id) {
+				if ($this->session->key) {
 					$key = $this->session->key;
 					$data['followup_id'] = $this->choices_model->get_followup_question_id($key);
 					if ($data['followup_id'] != NULL) {
